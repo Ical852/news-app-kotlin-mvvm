@@ -1,5 +1,7 @@
 package com.lazday.news.source.news
 
+import java.io.Serializable
+
 data class NewsModel(
     val status: String,
     val totalResult: Int,
@@ -15,9 +17,9 @@ data class ArticleModel(
     val urlToImage: String?,
     val publishedAt: String,
     val content: String?,
-)
+) : Serializable
 
 data class SourceModel(
     val id: String?,
     val name: String?
-)
+) : Serializable
