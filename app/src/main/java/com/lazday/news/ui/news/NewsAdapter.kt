@@ -30,7 +30,7 @@ class NewsAdapter(
         holder.binding.title.text = article.title
         holder.binding.publishedAt.text = DateUtil().dateFormat(article.publishedAt)
         Glide.with(holder.itemView.context)
-            .load(article.urlToImage)
+            .load("https://picsum.photos/id/23" + (position + 1).toString() + "/200/300")
             .into(holder.binding.image)
         holder.itemView.setOnClickListener {
             listener.onClick(article)

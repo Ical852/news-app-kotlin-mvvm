@@ -3,6 +3,7 @@ package com.lazday.news.ui.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lazday.news.source.news.ArticleModel
 import com.lazday.news.source.news.CategoryModel
 import com.lazday.news.source.news.NewsModel
 import com.lazday.news.source.news.NewsRepository
@@ -20,6 +21,8 @@ class HomeViewModel(val repository: NewsRepository): ViewModel() {
     val message by lazy { MutableLiveData<String>() }
     val news by lazy { MutableLiveData<NewsModel>() }
     val loading by lazy { MutableLiveData<Boolean>() }
+    val search by lazy { MutableLiveData<String>("") }
+    val page by lazy { MutableLiveData<Int>(1) }
 
     init {
         category.value = ""
@@ -27,12 +30,21 @@ class HomeViewModel(val repository: NewsRepository): ViewModel() {
         fetch()
     }
 
-    fun fetch(category: String = "") {
+    fun fetch(cat: String? = category.value, type: String = "normal") {
         loading.value = true
         viewModelScope.launch {
             try {
-                val response = repository.fetch(category, "", 1)
-                news.value = response
+                val response = repository.fetch(cat!!, search.value!!, page.value!!)
+                var newData = response
+
+                if (type == "extend") {
+                    var setupList: ArrayList<ArticleModel> = ArrayList()
+                    setupList.addAll(news.value!!.articles)
+                    setupList.addAll(response.articles)
+                    newData.articles = setupList
+                }
+
+                news.value = newData
                 loading.value = false
             } catch (e: Exception) {
                 message.value = "Terjadi Kesalahan " + e.message

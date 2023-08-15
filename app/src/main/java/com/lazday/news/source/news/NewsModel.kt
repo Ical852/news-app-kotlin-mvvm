@@ -1,13 +1,16 @@
 package com.lazday.news.source.news
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
 data class NewsModel(
     val status: String,
     val totalResult: Int,
-    val articles: List<ArticleModel>
+    var articles: List<ArticleModel>
 )
 
+@Entity(tableName = "tableArticle")
 data class ArticleModel(
     val source: SourceModel?,
     val author: String?,
@@ -15,6 +18,7 @@ data class ArticleModel(
     val description: String?,
     val url: String?,
     val urlToImage: String?,
+    @PrimaryKey(autoGenerate = false)
     val publishedAt: String,
     val content: String?,
 ) : Serializable

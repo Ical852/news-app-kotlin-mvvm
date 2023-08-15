@@ -8,6 +8,9 @@ val bookmarkViewModel = module {
     factory { BookmarkViewModel(get()) }
 }
 
-class BookmarkViewModel(val repository: NewsRepository): ViewModel() {
+class BookmarkViewModel(
+    val repository: NewsRepository
+): ViewModel() {
     val title = "Disimpan"
+    val articles = repository.db.findAll()
 }
